@@ -1,118 +1,69 @@
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KYAMI — AI for Helping You</title>
-  <meta name="description" content="KYAMI — Your AI companion for ideas, learning, and productivity.">
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #090b14;
-      color: #f5f5ff;
-    }
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 24px 8%;
-      border-bottom: 1px solid #222438;
-    }
-    .logo { font-size: 26px; font-weight: 800; color: #a99cff; }
-    nav a { color: #c9c9dc; text-decoration: none; }
-    main { text-align: center; padding: 100px 20px 80px; }
-    .tag {
-      color: #b9adff;
-      border: 1px solid #46406c;
-      border-radius: 50px;
-      padding: 9px 16px;
-      display: inline-block;
-      font-size: 13px;
-    }
-    h1 {
-      font-size: clamp(42px, 8vw, 76px);
-      line-height: 1.08;
-      margin: 28px auto 20px;
-      max-width: 800px;
-    }
-    h1 span {
-      background: linear-gradient(90deg, #a99cff, #73dbff);
-      color: transparent;
-      background-clip: text;
-    }
-    p { color: #a6a8bd; line-height: 1.8; }
-    .intro { max-width: 570px; margin: 0 auto 30px; }
-    .button {
-      display: inline-block;
-      padding: 14px 24px;
-      background: #a99cff;
-      color: #101020;
-      text-decoration: none;
-      border-radius: 12px;
-      font-weight: bold;
-    }
-    section { padding: 55px 8%; text-align: center; }
-    .features {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 18px;
-      max-width: 1000px;
-      margin: 30px auto;
-    }
-    .card {
-      padding: 25px;
-      text-align: left;
-      background: #121522;
-      border: 1px solid #252940;
-      border-radius: 18px;
-    }
-    .card h3 { margin-top: 8px; }
-    footer {
-      text-align: center;
-      padding: 25px;
-      border-top: 1px solid #222438;
-      color: #85889e;
-    }
-  </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090b10">
+  <meta name="description" content="KYAMI is your AI companion for thinking, learning, writing, and creating.">
+  <title>KYAMI — Your AI companion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+  <script src="./config.js"></script>
 </head>
 <body>
-  <header>
-    <div class="logo">KYAMI</div>
-    <nav><a href="#features">Features</a></nav>
-  </header>
-
-  <main>
-    <div class="tag">✦ Your AI companion</div>
-    <h1>Make your ideas <span>come alive.</span></h1>
-    <p class="intro">
-      Meet KYAMI — AI for helping you learn, create,
-      explore ideas, and get more done.
-    </p>
-    <a class="button" href="#features">Explore KYAMI ↗</a>
-  </main>
-
-  <section id="features">
-    <h2>What can KYAMI help you with?</h2>
-    <p>A smarter way to approach your everyday tasks.</p>
-    <div class="features">
-      <div class="card">
-        <h3>💡 Ideas</h3>
-        <p>Explore ideas and find inspiration for your next project.</p>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#" aria-label="KYAMI home">
+        <span class="brand-mark"><svg viewBox="0 0 40 40" aria-hidden="true"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#c5b5ff"/><stop offset="1" stop-color="#7be7d2"/></linearGradient></defs><path d="M20 3.5 24.8 15.2 36.5 20l-11.7 4.8L20 36.5l-4.8-11.7L3.5 20l11.7-4.8L20 3.5Z" fill="url(#g)"/><circle cx="20" cy="20" r="4" fill="#0b1015"/></svg></span>
+        <span class="brand-name">KYAMI<span class="brand-dot">.</span></span>
+      </a>
+      <button class="new-chat" id="newChatBtn"><span class="plus">＋</span> New chat <span class="shortcut">⌘ K</span></button>
+      <div class="sidebar-label">YOUR SPACE</div>
+      <button class="side-link active" id="homeBtn"><span class="nav-icon">✳</span> Chat</button>
+      <button class="side-link" id="historyBtn"><span class="nav-icon">◷</span> Recent chats</button>
+      <div class="history-list" id="historyList"></div>
+      <div class="sidebar-bottom">
+        <div class="plan-card"><div class="plan-icon">✦</div><div><strong>Made for curious minds</strong><p>Ask. Explore. Create.</p></div></div>
+        <div class="sidebar-foot"><span class="status-dot"></span><span id="connectionLabel">Checking connection…</span></div>
       </div>
-      <div class="card">
-        <h3>📚 Learning</h3>
-        <p>Understand new topics and build your knowledge.</p>
-      </div>
-      <div class="card">
-        <h3>⚡ Productivity</h3>
-        <p>Organize your thoughts and make your work easier.</p>
-      </div>
-    </div>
-  </section>
+    </aside>
 
-  <footer>© 2026 KYAMI. Built for curious minds.</footer>
+    <main class="main-panel">
+      <header class="topbar">
+        <button class="mobile-menu" id="mobileMenuBtn" aria-label="Toggle menu">☰</button>
+        <div class="mobile-brand">KYAMI<span class="brand-dot">.</span></div>
+        <div class="model-pill"><span class="model-spark">✦</span> KYAMI AI <span class="pill-chevron">⌄</span></div>
+        <button class="top-icon" id="themeBtn" title="Toggle theme" aria-label="Toggle theme">◐</button>
+      </header>
+
+      <section class="conversation" id="conversation" aria-live="polite">
+        <div class="welcome" id="welcome">
+          <div class="welcome-orb"><span>✦</span><i></i></div>
+          <div class="eyebrow"><span class="eyebrow-line"></span> A LITTLE MORE POSSIBILITY <span class="eyebrow-line"></span></div>
+          <h1>What can we <span>figure out</span><br>together?</h1>
+          <p class="welcome-copy">Your ideas have somewhere to go. Ask a question, solve a problem, or start something new with KYAMI.</p>
+          <div class="suggestions">
+            <button class="suggestion" data-prompt="Explain a difficult topic in simple words."><span class="suggestion-icon lavender">✧</span><span><strong>Learn something</strong><small>Make a complex idea simple</small></span><span class="suggestion-arrow">↗</span></button>
+            <button class="suggestion" data-prompt="Help me brainstorm creative ideas for a project."><span class="suggestion-icon mint">◈</span><span><strong>Find inspiration</strong><small>Brainstorm fresh ideas</small></span><span class="suggestion-arrow">↗</span></button>
+            <button class="suggestion" data-prompt="Help me write a clear, friendly message about an important topic."><span class="suggestion-icon blue">✎</span><span><strong>Write something</strong><small>Turn thoughts into words</small></span><span class="suggestion-arrow">↗</span></button>
+            <button class="suggestion" data-prompt="Help me build a small website with HTML, CSS, and JavaScript."><span class="suggestion-icon peach">⌘</span><span><strong>Build with code</strong><small>Plan or debug a project</small></span><span class="suggestion-arrow">↗</span></button>
+          </div>
+        </div>
+        <div class="messages" id="messages"></div>
+      </section>
+
+      <div class="composer-wrap">
+        <form class="composer" id="chatForm">
+          <textarea id="promptInput" rows="1" maxlength="8000" placeholder="Message KYAMI…" aria-label="Message KYAMI"></textarea>
+          <div class="composer-tools"><div class="composer-hint"><span class="hint-spark">✦</span> Thoughtful answers start with a question</div><div class="composer-actions"><span class="char-count" id="charCount">0 / 8000</span><button class="send-btn" id="sendBtn" type="submit" aria-label="Send message"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M6.5 10.5 12 5l5.5 5.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div></div>
+        </form>
+        <p class="disclaimer">KYAMI can make mistakes. Check important information. <span>Be curious, stay thoughtful.</span></p>
+      </div>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="./app.js"></script>
 </body>
 </html>
