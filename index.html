@@ -1,1 +1,118 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KYAMI — AI for Helping You</title>
+  <meta name="description" content="KYAMI — Your AI companion for ideas, learning, and productivity.">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #090b14;
+      color: #f5f5ff;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 8%;
+      border-bottom: 1px solid #222438;
+    }
+    .logo { font-size: 26px; font-weight: 800; color: #a99cff; }
+    nav a { color: #c9c9dc; text-decoration: none; }
+    main { text-align: center; padding: 100px 20px 80px; }
+    .tag {
+      color: #b9adff;
+      border: 1px solid #46406c;
+      border-radius: 50px;
+      padding: 9px 16px;
+      display: inline-block;
+      font-size: 13px;
+    }
+    h1 {
+      font-size: clamp(42px, 8vw, 76px);
+      line-height: 1.08;
+      margin: 28px auto 20px;
+      max-width: 800px;
+    }
+    h1 span {
+      background: linear-gradient(90deg, #a99cff, #73dbff);
+      color: transparent;
+      background-clip: text;
+    }
+    p { color: #a6a8bd; line-height: 1.8; }
+    .intro { max-width: 570px; margin: 0 auto 30px; }
+    .button {
+      display: inline-block;
+      padding: 14px 24px;
+      background: #a99cff;
+      color: #101020;
+      text-decoration: none;
+      border-radius: 12px;
+      font-weight: bold;
+    }
+    section { padding: 55px 8%; text-align: center; }
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+      max-width: 1000px;
+      margin: 30px auto;
+    }
+    .card {
+      padding: 25px;
+      text-align: left;
+      background: #121522;
+      border: 1px solid #252940;
+      border-radius: 18px;
+    }
+    .card h3 { margin-top: 8px; }
+    footer {
+      text-align: center;
+      padding: 25px;
+      border-top: 1px solid #222438;
+      color: #85889e;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">KYAMI</div>
+    <nav><a href="#features">Features</a></nav>
+  </header>
+
+  <main>
+    <div class="tag">✦ Your AI companion</div>
+    <h1>Make your ideas <span>come alive.</span></h1>
+    <p class="intro">
+      Meet KYAMI — AI for helping you learn, create,
+      explore ideas, and get more done.
+    </p>
+    <a class="button" href="#features">Explore KYAMI ↗</a>
+  </main>
+
+  <section id="features">
+    <h2>What can KYAMI help you with?</h2>
+    <p>A smarter way to approach your everyday tasks.</p>
+    <div class="features">
+      <div class="card">
+        <h3>💡 Ideas</h3>
+        <p>Explore ideas and find inspiration for your next project.</p>
+      </div>
+      <div class="card">
+        <h3>📚 Learning</h3>
+        <p>Understand new topics and build your knowledge.</p>
+      </div>
+      <div class="card">
+        <h3>⚡ Productivity</h3>
+        <p>Organize your thoughts and make your work easier.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>© 2026 KYAMI. Built for curious minds.</footer>
+</body>
+</html>
