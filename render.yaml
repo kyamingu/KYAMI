@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: kyami-ollama-cloud
+    runtime: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: OLLAMA_API_KEY
+        sync: false
+      - key: OLLAMA_BASE_URL
+        value: https://ollama.com
+      - key: FRONTEND_ORIGINS
+        value: https://kyamingu.github.io
+      - key: IP_REQUEST_LIMIT
+        value: "8"
+      - key: GLOBAL_HOURLY_LIMIT
+        value: "100"

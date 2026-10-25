@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#090b10">
   <meta name="description" content="KYAMI is your AI companion for thinking, learning, writing, and creating.">
-  <title>KYAMI — Your AI companion</title>
+  <title>KYAMI — Ollama Cloud Gemma AI</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -34,7 +34,11 @@
       <header class="topbar">
         <button class="mobile-menu" id="mobileMenuBtn" aria-label="Toggle menu">☰</button>
         <div class="mobile-brand">KYAMI<span class="brand-dot">.</span></div>
-        <div class="model-pill"><span class="model-spark">✦</span> KYAMI AI <span class="pill-chevron">⌄</span></div>
+        <label class="model-pill model-picker" title="Choose an available Gemma Cloud model">
+          <span class="model-spark">✦</span><span>Cloud Gemma</span>
+          <select id="modelSelect" aria-label="Choose Gemma model"><option value="">Checking Ollama Cloud…</option></select>
+          <span class="pill-chevron">⌄</span>
+        </label>
         <button class="top-icon" id="themeBtn" title="Toggle theme" aria-label="Toggle theme">◐</button>
       </header>
 
