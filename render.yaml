@@ -1,3 +1,4 @@
+
 services:
   - type: web
     name: kyami-ollama-cloud
@@ -12,7 +13,7 @@ services:
       - key: OLLAMA_BASE_URL
         value: https://ollama.com
       - key: FRONTEND_ORIGINS
-        value: https://kyamingu.github.io
+        value: https://kyamingu.github.io,https://kyami-ai.aimraneoubram.workers.dev
       - key: IP_REQUEST_LIMIT
         value: "8"
       - key: GLOBAL_HOURLY_LIMIT
