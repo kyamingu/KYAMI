@@ -1,0 +1,14 @@
+.git/
+.github/
+node_modules/
+backend/
+src/
+server.js
+package.json
+render.yaml
+wrangler.jsonc
+.gitignore
+.assetsignore
+README*
+bun.lock
+package-lock.json
