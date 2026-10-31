@@ -1,4 +1,11 @@
 .env
 .env.*
+.dev.vars
+.dev.vars.*
+.npmrc
+.npmrc.*
 node_modules/
+.wrangler/
+coverage/
+dist/
 .DS_Store

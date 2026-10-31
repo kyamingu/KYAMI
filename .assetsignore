@@ -2,14 +2,23 @@
 .github/
 node_modules/
 backend/
+.wrangler/
+tests/
 src/
+.env
+.env.*
+.dev.vars
+.dev.vars.*
 server.js
 package.json
+package-lock.json
+bun.lock
+vite.config.mjs
+.npmrc
+.npmrc.*
 render.yaml
 wrangler.jsonc
+wrangler.test.jsonc
 .gitignore
 .assetsignore
 README*
-bun.lock
-package-lock.json
-# Trigger Cloudflare production build

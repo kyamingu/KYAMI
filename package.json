@@ -1,14 +1,26 @@
 {
-  "name": "kyami-ai-backend",
+  "name": "kyami-ai",
   "version": "1.0.0",
   "private": true,
-  "description": "Secure server-side API proxy for the KYAMI AI chat website",
+  "description": "KYAMI static frontend and Cloudflare Workers AI Worker",
   "main": "server.js",
-  "scripts": { "start": "node server.js" },
-  "engines": { "node": ">=20" },
+  "scripts": {
+    "start": "node server.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "assets:check": "wrangler deploy --dry-run --outdir .wrangler/asset-audit"
+  },
+  "engines": {
+    "node": ">=20"
+  },
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "express-rate-limit": "^8.1.0"
+  },
+  "devDependencies": {
+    "@cloudflare/vitest-plugin": "^1.4.11",
+    "vitest": "^5.0.5",
+    "wrangler": "^4.156.0"
   }
 }

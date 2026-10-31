@@ -10,5 +10,19 @@
   },
   "ai": {
     "binding": "AI"
+  },
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "RATE_LIMITER",
+        "class_name": "KyamiRateLimiter"
+      }
+    ]
+  },
+  "exports": {
+    "KyamiRateLimiter": {
+      "type": "durable-object",
+      "storage": "sqlite"
+    }
   }
 }

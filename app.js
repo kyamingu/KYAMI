@@ -14,6 +14,9 @@
   const connectionLabel = document.getElementById("connectionLabel");
   const modelSelect = document.getElementById("modelSelect");
   const MAX_HISTORY = 30;
+  const MAX_MESSAGES = 20;
+  const MAX_MESSAGE_CHARS = 8000;
+  const MAX_CONTEXT_CHARS = 30000;
   let conversations = safeRead("kyami-conversations", []);
   let currentId = null;
   let busy = false;
@@ -40,7 +43,7 @@
   }
   async function loadModels() {
     if (!backendConfigured()) {
-      modelSelect.innerHTML = '<option value="">Set up Ollama Cloud backend</option>';
+      modelSelect.innerHTML = '<option value="">Cloudflare Workers AI URL is not configured</option>';
       modelSelect.disabled = true;
       setConnection(false, "Cloud backend URL needed");
       return;
@@ -48,31 +51,56 @@
     try {
       const response = await fetch(`${apiBaseUrl}/api/models`, { method: "GET" });
       const data = await response.json().catch(() => ({}));
-      if (!response.ok) throw new Error(data.error || "Cannot connect to Ollama Cloud backend.");
+      if (!response.ok) throw new Error(window.kyamiApiErrorMessage(data) || "Cannot connect to Cloudflare Workers AI.");
       const models = Array.isArray(data.models) ? data.models : [];
       modelSelect.replaceChildren();
       if (!models.length) {
         const option = document.createElement("option");
-        option.value = ""; option.textContent = "No Gemma Cloud models available";
+        option.value = ""; option.textContent = "No supported model is available";
         modelSelect.append(option); modelSelect.disabled = true;
-        setConnection(false, "No Gemma Cloud models available");
+        setConnection(false, "No supported model is available");
         return;
       }
       const saved = (() => { try { return localStorage.getItem("kyami-model") || ""; } catch { return ""; } })();
-      const preferred = models.includes(saved) ? saved : (models.includes("gemma3:4b") ? "gemma3:4b" : models[0]);
+      const preferred = models.includes(saved) ? saved : models[0];
       for (const name of models) {
         const option = document.createElement("option");
         option.value = name; option.textContent = name;
         modelSelect.append(option);
       }
       modelSelect.value = preferred;
-      modelSelect.disabled = false;
-      setConnection(true, `Ollama Cloud · ${models.length} Gemma model${models.length === 1 ? "" : "s"}`);
+      modelSelect.disabled = models.length === 1;
+      setConnection(true, `Cloudflare Workers AI · ${models.length} model${models.length === 1 ? "" : "s"}`);
     } catch (error) {
-      modelSelect.innerHTML = '<option value="">Cloud backend unavailable</option>';
+      modelSelect.innerHTML = '<option value="">Cloudflare Workers AI unavailable</option>';
       modelSelect.disabled = true;
       setConnection(false, "Check cloud backend settings");
     }
+  }
+  function recentContext(messages) {
+    const candidates = messages.slice(-MAX_MESSAGES).filter(message =>
+      message && ["user", "assistant"].includes(message.role) &&
+      typeof message.text === "string" && message.text.trim().length > 0 &&
+      message.text.trim().length <= MAX_MESSAGE_CHARS
+    );
+    if (!candidates.length || candidates[candidates.length - 1].role !== "user") return [];
+    const selected = [];
+    let total = 0;
+    for (let i = candidates.length - 1; i >= 0; i -= 1) {
+      const text = candidates[i].text.trim();
+      if (total + text.length > MAX_CONTEXT_CHARS) break;
+      selected.push({ role: candidates[i].role, text });
+      total += text.length;
+    }
+    selected.reverse();
+    while (selected[0]?.role === "assistant") selected.shift();
+    // Local history is untouched; only omit older duplicate roles from request context.
+    const ordered = [];
+    for (const message of selected) {
+      if (ordered[ordered.length - 1]?.role === message.role) ordered[ordered.length - 1] = message;
+      else ordered.push(message);
+    }
+    return ordered.length && ordered[ordered.length - 1].role === "user" ? ordered : [];
   }
   function renderHistory() {
     historyList.replaceChildren();
@@ -119,8 +147,12 @@
   async function sendMessage(rawText) {
     const text = String(rawText || "").trim();
     if (!text || busy) return;
+    if (text.length > MAX_MESSAGE_CHARS) {
+      showToast(`Messages are limited to ${MAX_MESSAGE_CHARS} characters.`);
+      return;
+    }
     if (!backendConfigured() || !backendReady || !modelSelect.value) {
-      showToast("KYAMI Cloud is not connected yet. Check the Render backend URL and Ollama Cloud setup.");
+      showToast("Cloudflare Workers AI is not connected yet. Check the configured Worker URL.");
       return;
     }
     if (!current()) createConversation();
@@ -131,14 +163,15 @@
     input.value = ""; autosize(); busy = true; sendBtn.disabled = true;
     const typing = addTyping();
     try {
-      const history = c.messages.slice(-20).map(m => ({ role: m.role, text: m.text }));
+      const history = recentContext(c.messages);
+      if (!history.length) throw new Error("The recent conversation could not be prepared. Start a new chat and try again.");
       const response = await fetch(`${apiBaseUrl}/api/chat`, {
         method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ messages: history, model: modelSelect.value })
       });
       const data = await response.json().catch(() => ({}));
       typing.remove();
-      if (!response.ok) throw new Error(data.error || `Request failed (${response.status}).`);
+      if (!response.ok) throw new Error(window.kyamiApiErrorMessage(data, response) || `Request failed (${response.status}).`);
       const reply = typeof data.reply === "string" ? data.reply.trim() : "";
       if (!reply) throw new Error("KYAMI received an empty response. Please try again.");
       c.messages.push({ role: "assistant", text: reply }); c.updatedAt = Date.now(); persist();
@@ -159,7 +192,7 @@
   modelSelect.addEventListener("change", () => {
     try { localStorage.setItem("kyami-model", modelSelect.value); } catch {}
     const model = modelSelect.value;
-    if (model) showToast(`Selected ${model}`);
+    if (model && !modelSelect.disabled) showToast(`Selected ${model}`);
   });
   document.getElementById("newChatBtn").addEventListener("click", createConversation);
   document.getElementById("homeBtn").addEventListener("click", () => { if (!current() || current().messages.length) createConversation(); else renderMessages(); });
@@ -171,7 +204,7 @@
   });
   try { if (localStorage.getItem("kyami-light-theme") === "1") document.body.classList.add("light-theme"); } catch {}
   document.addEventListener("keydown", e => { if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") { e.preventDefault(); createConversation(); } if (e.key === "Escape") sidebar.classList.remove("open"); });
-  setConnection(false, "Checking Ollama Cloud…");
+  setConnection(false, "Checking Cloudflare Workers AI…");
   loadModels();
   renderHistory();
   if (!conversations.length) createConversation(); else loadConversation(conversations[0].id);
